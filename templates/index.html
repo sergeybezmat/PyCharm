@@ -1,0 +1,31 @@
+
+        {% extends "base.html" %}
+{% block content %}
+
+
+    <table>
+    <tr>
+        <td colspan="2"> <p> Мои показатели </p> </td>
+        <td> <p> Лидеры дня по заявкам </p> </td>
+    </tr>
+    <tr>
+        <td> <p1>заявки вчера: 3</p1> </td>
+        <td> <p1>заявки сегодня: 1</p1> </td>
+        <td> <p>  {{ user.username }} {{ sur.surname }}    8 </p> </td>
+    </tr>
+    <tr>
+        <td> <p1> Звонки за день </p1> <br>
+        <p1 style="color: red;"> 10/70 </p1>
+        </td>
+        <td> <p1> Заявки за месяц </p1> <br>
+        <p1 style="color: greenyellow"> 40/100 </p1>
+        </td>
+        <td> <p style="background: #F4A460;"> Петр Петров    5 </p> </td>
+    </tr>
+    <tr>
+        <td>  </td>
+        <td> </td>
+        <td> <p style="background: #FFDAB9"> Сидор Сидоров   3 </p> </td>
+    </tr>
+</table>
+{% endblock %}

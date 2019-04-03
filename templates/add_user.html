@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить пользователя</title>
+</head>
+<body>
+    {% for user in myUser %}
+        <li> {{ user.id }}. {{ user.username }} - {{ user.email }}</li>
+    {% endfor %}
+
+    {{ oneItem.username }}
+
+</body>
+</html>

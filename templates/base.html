@@ -1,0 +1,53 @@
+su<!DOCTYPE html>
+<html lang="en">
+<head>
+      <title>GET запросы</title>
+      <link href='{{ url_for('static', filename='st6.css') }}' rel='stylesheet'>
+    <style>
+        td {
+            width: 175px;
+            text-align: center;
+            vertical-align: center;
+        }
+        p{
+            border-radius: 5px;
+            color:white;
+            background: orange;
+            font-family: Arial;
+            text-align: center;
+            padding-left: 10px;
+            padding-right: 10px;
+            height: 27px;
+            width: 315px;
+            font-size: 20px;
+            vertical-align: text-top;/* Выравнивание по вертикали */
+        }
+        p1{
+            border-radius: 0 10px;
+            color:white;
+            background: orange;
+            font-family: Arial;
+            text-align: center;
+            padding-left: 10px;
+            padding-right: 10px;
+            height: 3px;
+            width: 125px;
+        }
+
+
+    </style>
+</head>
+    <body>
+        <div>
+
+
+            <a href="{{ url_for('index') }}">Home</a>  &nbsp;
+            <a href="{{ '/index?username=Иван&surname=Иванов' }}"> Иван Иванов </a> &nbsp;
+            <a href="{{ '/index?username=Иван' }}"> Иван </a> &nbsp;
+            <a href="{{ '/index?username=Не Иван' }}"> Не Иван </a> &nbsp;
+            <hr>
+
+        </div>
+        {% block content %}{% endblock %}
+</body>
+</html>
