@@ -44,7 +44,8 @@ su<!DOCTYPE html>
             <a href="{{ url_for('index') }}">Home</a>  &nbsp;
             <a href="{{ '/index?username=Иван&surname=Иванов' }}"> Иван Иванов </a> &nbsp;
             <a href="{{ '/index?username=Иван' }}"> Иван </a> &nbsp;
-            <a href="{{ '/index?username=Не Иван' }}"> Не Иван </a> &nbsp;
+            <a href="{{ '/index?username=Не Иван' }}"> Не Иван </a>
+            <a href="{{ url_for('add_user') }}">БД</a>&nbsp;
             <hr>
 
         </div>
