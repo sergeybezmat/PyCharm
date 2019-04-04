@@ -41,14 +41,20 @@
         <div>
 
 
-            <a href="{{ url_for('index') }}">Home</a>
-            <a href="{{ url_for('add_user') }}"> БД</a>&nbsp;&nbsp;
+            <a href="{{ url_for('index') }}"> Статистика </a>&nbsp;
             <a href="{{ url_for('redis') }}"> Redis</a>
-            <a href="{{ '/index?username=Иван&surname=Иванов' }}"> Иван Иванов </a> &nbsp;
+
 
             <hr>
 
         </div>
         {% block content %}{% endblock %}
+        <br>
+        <br>
+        <br>
+        <br>
+    Ссылки для ускорения работы:
+        <a href="{{ '/index?login=login1' }}"> login1</a>
+        <a href="{{ '/index?login=login2' }}"> login2</a>
 </body>
 </html>

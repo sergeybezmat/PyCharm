@@ -13,28 +13,29 @@ redis = Redis(app, 'REDIS')
 r = redis.hgetall("agents:state:offline")
 
 @app.route('/')
+def home():
+     return render_template('home.html')
+
+
 @app.route('/index')
 def index():
-     if request.args.get('username') == None:
-          aq = 'Пользователь'
-          sur = '!'
+     l = request.args.get('login')
+     if l == None:
+          vvedi=1
      else:
-          if request.args.get('surname') == None:
-               aq = request.args.get('username')
-               sur = '!'
-          else:
-               aq = request.args.get('username')
-               aw = request.args.get('surname')
-               sur = {'surname': aw}
-     user = {'username': aq}
-     return render_template('index.html', title='Home', user=user, sur=sur)
+            zaplog = connection.execute("SELECT namee, surname, plan, fakt, plan_mes, fakt_mes, za_vch, za_seg FROM TEST WHERE login='{0}'".format(l)).fetchone()
+            user = {'username': zaplog[0]}
+            sur = {'surname': zaplog[1]}
+            plan = {'p': zaplog[2]}
+            fakt = {'f': zaplog[3]}
+            plan_mes = {'p': zaplog[4]}
+            fakt_mes = {'f': zaplog[5]}
+            za_vch = {'z': zaplog[6]}
+            za_seg = {'z': zaplog[7]}
+            vvedi = 0
+     return render_template('index.html', title='Статистика', user=user, sur=sur, plan=plan, fakt=fakt, plan_mes=plan_mes, fakt_mes=fakt_mes, za_vch=za_vch, za_seg=za_seg, vvedi=vvedi)
 
-@app.route('/add_user')
-def add_user():
-     s = connection.execute('SELECT * FROM naumb_file_type').fetchall()
-     #s1 = connection.execute('SELECT login, status, sub_status, sum(duration) FROM ns_agent_sub_status_duration GROUP BY login, status, sub_status').fetchall()
-     s1 = connection.execute('SELECT * FROM TEST')
-     return render_template('add_user.html', title='DB', s=s, s1=s1)
+
 
 @app.route('/redis')
 def redis():

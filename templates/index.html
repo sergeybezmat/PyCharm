@@ -1,7 +1,5 @@
-
-        {% extends "base.html" %}
+ {% extends "base.html" %}
 {% block content %}
-
 
     <table>
     <tr>
@@ -9,23 +7,24 @@
         <td> <p> Лидеры дня по заявкам </p> </td>
     </tr>
     <tr>
-        <td> <p1>заявки вчера: 3</p1> </td>
-        <td> <p1>заявки сегодня: 1</p1> </td>
-        <td> <p>  {{ user.username }} {{ sur.surname }}    8 </p> </td>
+        <td> <p1>заявки вчера: {{ za_vch.z }}</p1> </td>
+        <td> <p1>заявки сегодня: {{ za_seg.z }}</p1> </td>
+        <td> <p>  {{ user.username }} {{ sur.surname }} - {{ za_seg.z }} </p> </td>
     </tr>
     <tr>
         <td> <p1> Звонки за день </p1> <br>
-        <p1 style="color: red;"> 10/70 </p1>
+        <p1 style="color: red;"> {{ fakt.f }}/{{ plan.p }} </p1>
         </td>
         <td> <p1> Заявки за месяц </p1> <br>
-        <p1 style="color: greenyellow"> 40/100 </p1>
+        <p1 style="color: greenyellow"> {{ fakt_mes.f }}/{{ plan_mes.p }} </p1>
         </td>
-        <td> <p style="background: #F4A460;"> Петр Петров    5 </p> </td>
+        <td> <p style="background: #F4A460;"> Петр Петров - 5 </p> </td>
     </tr>
     <tr>
         <td>  </td>
         <td> </td>
-        <td> <p style="background: #FFDAB9"> Сидор Сидоров   3 </p> </td>
+        <td> <p style="background: #FFDAB9"> Сидор Сидоров  -  3 </p> </td>
     </tr>
 </table>
+
 {% endblock %}
