@@ -1,4 +1,4 @@
-su<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
       <title>GET запросы</title>
@@ -41,11 +41,11 @@ su<!DOCTYPE html>
         <div>
 
 
-            <a href="{{ url_for('index') }}">Home</a>  &nbsp;
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('add_user') }}"> БД</a>&nbsp;&nbsp;
+            <a href="{{ url_for('redis') }}"> Redis</a>
             <a href="{{ '/index?username=Иван&surname=Иванов' }}"> Иван Иванов </a> &nbsp;
-            <a href="{{ '/index?username=Иван' }}"> Иван </a> &nbsp;
-            <a href="{{ '/index?username=Не Иван' }}"> Не Иван </a>
-            <a href="{{ url_for('add_user') }}">БД</a>&nbsp;
+
             <hr>
 
         </div>
