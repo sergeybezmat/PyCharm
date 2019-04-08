@@ -9,6 +9,8 @@ now = datetime.datetime.now()
 dataa = now.strftime("%Y-%m-%d")
 data_vhera = now - datetime.timedelta(days=1)
 vhera = data_vhera.strftime("%Y-%m-%d")
+mon = now.month
+
 
 
 
@@ -19,6 +21,8 @@ connection = engine.connect()
 app.config['REDIS_URL'] = 'redis://172.16.200.199:6379/db0'
 redis = Redis(app, 'REDIS')
 r = redis.hgetall("agents:state:offline")
+
+
 
 
 
@@ -42,19 +46,29 @@ def index():
         if i[0] == True:
             chet_vch += 1
 
+    vreak = connection.execute("select avg(incoming_rt) from ns_inbound_call_data where agent_connected = '{0}' and is_processed = true group by agent_connected".format(l))#время реакции на заявку
+    for i in vreak:
+        vreak = round(i[0], 2)
+    vraz = connection.execute("select avg(incoming_tt) from ns_inbound_call_data where agent_connected = '{0}' and is_processed = true group by agent_connected".format(l))# время разговора
+    for i in vraz:
+        vraz = round(i[0], 2)
+
+    vmes = connection.execute("SELECT is_processed FROM ns_inbound_call_data WHERE agent_connected = '{0}' and created_date like '____-04-__'".format(l, mon))
+    vmon = 0
+    for i in vmes:
+        if i[0] == True:
+            vmon += 1
 
 
-
-    zaplog = connection.execute("SELECT namee, surname, plan, fakt, plan_mes, fakt_mes, za_vch, za_seg FROM TEST WHERE login='{0}'".format(l)).fetchone()
-    user = {'username': zaplog[0]}
-    sur = {'surname': zaplog[1]}
-    plan = {'p': zaplog[2]}
-    fakt = {'f': zaplog[3]}
-    plan_mes = {'p': zaplog[4]}
-    fakt_mes = {'f': zaplog[5]}
+    user = {'username':l}
+    sur = {'surname': 'НЕ'}
+    plan = {'p':'НЕ' }
+    za_mes = {'z': vmon}
+    timeraz = {'t': vraz}
+    timereak = {'t': vreak}
     za_vch = {'z': chet_vch}
     za_seg = {'z': chet_seg}
-    return render_template('index.html', title='Статистика', user=user, sur=sur, plan=plan, fakt=fakt, plan_mes=plan_mes, fakt_mes=fakt_mes, za_vch=za_vch, za_seg=za_seg)
+    return render_template('index.html', title='Статистика', user=user, sur=sur, plan=plan, za_mes=za_mes, timeraz=timeraz, timereak=timereak, za_vch=za_vch, za_seg=za_seg)
 
 
 
