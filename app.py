@@ -63,11 +63,15 @@ def index():
         if i[0] == True:
             vmon += 1
     #топ операторов
+
     t = connection.execute("with vspom as (select agent_connected, Sum(Case When is_processed = true Then 1 Else 0 End) as is_processed From ns_inbound_call_data where created_date = '{0}' and is_processed!=false group by agent_connected ) select is_processed, agent_connected from vspom order by is_processed DESC, agent_connected".format(dataa))
     spisok = []
     for i in t:
         spisok.append(i)
-
+    for k in range(2):
+        if spisok[k][0]:
+            for i in range(2):
+                spisok.append((' ', 0))
     user = {'username':l}
     za_mes = {'z': vmon}
     timeraz = {'t': vraz}
