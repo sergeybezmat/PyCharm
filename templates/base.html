@@ -37,9 +37,18 @@
 
     </style>
 </head>
+
+    <script src="static/jquery-3.3.1.min.js"></script>
+    <script src="static/jquery.peity.min.js"></script>
+
+
     <body>
+
+
+
+
         <meta http-equiv="Refresh" content="60" />
-        <div>
+        <!--<div>
 
 
             <a href="{{ url_for('index') }}"> Статистика </a>&nbsp;
@@ -48,16 +57,17 @@
 
             <hr>
 
-        </div>
+        </div> -->
         {% block content %}{% endblock %}
         <br>
         <br>
         <br>
         <br>
     Ссылки для ускорения работы:
-        <a href="{{ '/index?login=login1' }}"> login1</a>
-        <a href="{{ '/index?login=slava' }}"> slava </a>
-        <a href="{{ '/index?login=oleg' }}"> oleg </a>
+        <a href="{{ '/index?login=login1' }}"> login1  </a>
+        <a href="{{ '/index?login=slava' }}"> slava  </a>
+        <a href="{{ '/index?login=oleg' }}"> oleg  </a>
         <a href="{{ '/index?login=julia' }}"> julia </a>
 </body>
+<script> $(".data-attributes span").peity("donut") </script>
 </html>
