@@ -18,7 +18,7 @@
             padding-left: 10px;
             padding-right: 10px;
             height: 27px;
-            width: 330px;
+            width: 350px;
             font-size: 20px;
             vertical-align: text-top;/* Выравнивание по вертикали */
         }
@@ -40,6 +40,7 @@
 
     <script src="static/jquery-3.3.1.min.js"></script>
     <script src="static/jquery.peity.min.js"></script>
+    <script src="diag.min.js"></script>
 
 
     <body>
@@ -47,32 +48,19 @@
 
 
 
-        <meta http-equiv="Refresh" content="60" />
-        <!--<div>
-
-
-            <a href="{{ url_for('index') }}"> Статистика </a>&nbsp;
-            <a href="{{ url_for('redis') }}"> Redis</a>
-
-
-            <hr>
-
-        </div> -->
+        <meta http-equiv="Refresh" content="5" />
         {% block content %}{% endblock %}
         <br>
         <br>
         <br>
         <br>
     Ссылки для ускорения работы:
-       <!-- <a href="{{ '/index?login=login1' }}"> login1  </a>
-        <a href="{{ '/index?login=slava' }}"> slava  </a>
-        <a href="{{ '/index?login=oleg' }}"> oleg  </a>
-        <a href="{{ '/index?login=julia' }}"> julia </a> -->
-        <hr>
+
         <a href="{{ '/ind?login=login1' }}"> login1  </a>
         <a href="{{ '/ind?login=slava' }}"> slava  </a>
         <a href="{{ '/ind?login=oleg' }}"> oleg  </a>
         <a href="{{ '/ind?login=julia' }}"> julia </a>
+
 </body>
 <script> $(".data-attributes span").peity("donut") </script>
 </html>
