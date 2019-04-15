@@ -1,7 +1,11 @@
 from flask import Flask
-from flask import render_template, request#, redirect, url_for
+from flask import render_template, request
 from sqlalchemy import create_engine
 import datetime
+
+
+
+
 
 now = datetime.datetime.now()
 dataa = now.strftime("%Y-%m-%d")
@@ -13,9 +17,19 @@ app = Flask(__name__)
 engine = create_engine("postgresql://naucrm:naucrm@172.16.200.199:5432/naumenreportsdb")
 connection1 = engine.connect()
 
+
 @app.route('/')
 def home():
      return render_template('home.html')
+
+@app.route('/test')
+def test():
+    return '6'
+
+@app.route('/index', methods=['GET', 'POST'])
+def index():
+
+    return render_template('index.html')
 
 @app.route('/ind')
 def ind():
@@ -51,4 +65,4 @@ def ind():
 
 
 if __name__ == "__main__":
-          app.run()
+          app.run(treding = True)

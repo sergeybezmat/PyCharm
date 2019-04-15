@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AJAX</title>
+    <script src="static/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+function show(url, block) {
+    $.ajax({
+        url: url,
+        success: function(html) {
+            block.html(html);
+        }
+    });
+  }
+$(document).ready(function() {
+    show('http://127.0.0.1:5000/test', $('#display'));
+
+});
+
+
+</script>
+</head>
+<body>
+<div id="display"></div>
+т
+</body>
+</html>
+<!--
+$(document).ready(function() {
+    show('test()', $('#display'));
+    setInterval('show()', 1000)
+
+setInterval('show()', 1000) -->
