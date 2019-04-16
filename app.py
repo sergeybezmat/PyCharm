@@ -21,13 +21,7 @@ connection1 = engine.connect()
 def home():
      return render_template('home.html')
 
-@app.route('/test', methods=['GET', 'POST'])
-def test():
-    l= request.args.get('logi')
-    imya = connection1.execute("select objtitle from mv_skill_relation where login = '{0}'".format(l))
-    for i in imya:
-        fio = i[0]
-    return json.dump({'fio': fio})
+
 
 @app.route('/index', methods=['GET', 'POST'])
 def index():
@@ -65,6 +59,30 @@ def ind():
         eq = eq[1] + ' ' + eq[0]
         spisok[i] = (spisok[i][0], eq)
     return render_template('ind.html', title='Статистика', user=fio, za_seg=zv_seg, za_vch=zv_vch, za_mes=za_mes, name1=spisok[0][1], rez1=spisok[0][0], name2=spisok[1][1], rez2=spisok[1][0], name3=spisok[2][1], rez3=spisok[2][0])
+
+@app.route('/zvseg')
+def zvseg():
+    l= request.args.get('logi')
+    imya = connection1.execute("select objtitle from mv_skill_relation where login = '{0}'".format(l))
+    for i in imya:
+        fio = i[0]
+    # звонки за сегодня
+    zv_seg = connection1.execute("select count(*) from mv_phone_call where direction = 'Inbound' and operatortitle = '{0}' and creationdate >= '{1}'::date and creationdate <'{1}'::date+1;".format(fio, dataa))
+    for i in zv_seg:
+        zv_seg = i[0]
+    return str(zv_seg)
+
+@app.route('/za_mes')
+def za_mes():
+    l = request.args.get('logi')
+    imya = connection1.execute("select objtitle from mv_skill_relation where login = '{0}'".format(l))
+    for i in imya:
+        fio = i[0]
+    za_mes = connection1.execute("select count(*) from mv_phone_call where direction = 'Inbound' and operatortitle = '{0}' and creationdate >= '2019-0{1}-01'::date and creationdate <'2019-0{1}-30'::date;".format(fio, mon))
+    for i in za_mes:
+        za_mes = i[0]
+    return str(za_mes)
+
 
 
 if __name__ == "__main__":

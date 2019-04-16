@@ -18,33 +18,24 @@ $.urlParam = function(name){
 }
 log = decodeURIComponent($.urlParam('login'))
 
-$.ajax({
-    url : '/test',
-    data : { logi: log}
-    }
-)
 
-function show(url, block) {
+
+function show(url, bl) {
     $.ajax({
-        type: 'POST',
-        url: url,
-        success: function(response) {
-                    var json = jQuery.parseJSON(response)
-                    block.html(json.fio)
-                    console.log(response);
+        url : url,
+        data : { logi: log},
+        success: function(html) {
+                    bl.html(html);
         }
     });
   }
-$(document).ready(function() {
-    show('/test', $('#display'));
-
-});
+setInterval('show(\'/zvseg\', $(\'#zvseg\'))', 1000);
 
 
 </script>
 </head>
 <body>
-<div id="display"></div>
+<div id="zvseg"></div>
 т
 </body>
 </html>
