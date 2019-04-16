@@ -1,5 +1,4 @@
-from flask import Flask
-from flask import render_template, request
+from flask import Flask, render_template, request, json
 from sqlalchemy import create_engine
 import datetime
 
@@ -22,9 +21,13 @@ connection1 = engine.connect()
 def home():
      return render_template('home.html')
 
-@app.route('/test')
+@app.route('/test', methods=['GET', 'POST'])
 def test():
-    return '6'
+    l= request.args.get('logi')
+    imya = connection1.execute("select objtitle from mv_skill_relation where login = '{0}'".format(l))
+    for i in imya:
+        fio = i[0]
+    return json.dump({'fio': fio})
 
 @app.route('/index', methods=['GET', 'POST'])
 def index():

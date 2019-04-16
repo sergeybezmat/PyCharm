@@ -5,16 +5,38 @@
     <title>AJAX</title>
     <script src="static/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
+
+
+$.urlParam = function(name){
+    var results = new RegExp('[/?&]' + name + '=([^&#]*)').exec(window.location.href);
+    if (results==null){
+       return null;
+    }
+    else{
+       return decodeURI(results[1]) || 0;
+    }
+}
+log = decodeURIComponent($.urlParam('login'))
+
+$.ajax({
+    url : '/test',
+    data : { logi: log}
+    }
+)
+
 function show(url, block) {
     $.ajax({
+        type: 'POST',
         url: url,
-        success: function(html) {
-            block.html(html);
+        success: function(response) {
+                    var json = jQuery.parseJSON(response)
+                    block.html(json.fio)
+                    console.log(response);
         }
     });
   }
 $(document).ready(function() {
-    show('http://127.0.0.1:5000/test', $('#display'));
+    show('/test', $('#display'));
 
 });
 
