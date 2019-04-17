@@ -17,48 +17,71 @@ log = decodeURIComponent($.urlParam('login'))
 function show(url, bl) {
     $.ajax({
         url : url,
-        data : { logi: log},
+        data : { login1: log},
+        cache : false,
         success: function(html) {
                     bl.html(html);
         }
     });
   }
-setInterval('show(\'/zvseg\', $(\'#zvseg\'))', 1000);
-setInterval('show(\'/za_mes\', $(\'#za_mes\'))', 1000);
 
+function top(url, bl) {
+    $.ajax({
+        url : url,
+        cache : false,
+        success: function(html) {
+                    bl.html(html);
+        }
+    });
+  }
+setInterval('show(\'/calls_today\', $(\'#calls_today\'))', 60000);
+setInterval('show(\'/calls_month\', $(\'#calls_month\'))', 60000);
+//исходящие
+setInterval('show(\'/outcalls_today\', $(\'#outcalls_today\'))', 60000);
+setInterval('show(\'/outcalls_month\', $(\'#outcalls_month\'))', 60000);
+
+setInterval('show(\'/top\', $(\'#top\'))', 60000);
 </script>
-    <table>
-    <tr>
-        <td colspan="2"> <p> Мои показатели </p> </td>
-        <td> <p> Лидеры дня по звонкам </p> </td>
-    </tr>
-    <tr>
-        <td> <p1> звонки вчера </p1>
-         </td>
-        <td> <p1> звонки сегодня </p1>
-         </td>
-     <td> <p>   {{ name1 }} {{ rez1 }}  </p> </td>
 
-    </tr>
+<table>
     <tr>
-        <td> <p5 class="data-attributes">
-  <span data-peity='{"innerRadius": 25, "radius": 40 }'>{{ za_vch }}/20</span>
-</p5> <br> {{ za_vch }}/20
+        <td colspan="4", style="text-align: center"><p style=" padding: 8px;"> Мои показатели</p></td>
+        <td rowspan="4", style="vertical-align: text-top"><p style=" padding: 8px;"> Лидеры дня по звонкам  <br>
+            <p>   {{ name1 }} {{ calls1 }}  </p>
+            <p style="background: #F4A460;"> {{ name2 }} {{ calls2 }} </p>
+            <p style="background: #FFDAB9"> {{ name3 }} {{ calls3 }} </p>
 
         </td>
-        <td> <p5 class="data-attributes">
-  <span data-peity='{"innerRadius": 25, "radius": 40 }'>{{ za_seg }}/20</span>
-        </p5> <br>  <span id="zvseg">{{ za_seg }}</span>/20
-        </td>
-        <td> <p style="background: #F4A460;"> {{ name2 }} {{ rez2 }} </p> </td>
     </tr>
     <tr>
-        <td> <p1> Звонки за месяц </p1> </td>
-        <td> <p5 class="data-attributes">
-  <span data-peity='{"innerRadius": 25, "radius": 40 }'>{{ za_mes }}/100</span>
-        </p5>  <br> <span id="za_mes">{{ za_mes }}</span>/100 </td>
-        <td> <p style="background: #FFDAB9"> {{ name3 }} {{ rez3 }} </p> </td>
+        <td colspan="2"><p>Входящие звонки</p></td>
+        <td colspan="2"><p>Исходящие звонки</p></td>
+    </tr>
+    <tr>
+        <td><p1> Звонки вчера <br> </p1>  <p5 class="data-attributes">
+  <span data-peity='{"innerRadius": 25, "radius": 40 }'>{{ calls_yest }}/{{ plan_calls }}</span>
+</p5> <br> {{ calls_yest }}/{{ plan_calls }} </td>
+        <td><p1> Звонки сегодня</p1> <br> <p5 class="data-attributes">
+            <span data-peity='{"innerRadius": 25, "radius": 40 }'>{{ calls_today }}/{{ plan_calls }}</span>
+        </p5> <br>  <span id="calls_today" >{{ calls_today }}</span>/{{ plan_calls }}</td>
 
+        <td><p1>Звонки за вчера</p1> <br> <p5 class="data-attributes">
+  <span data-peity='{"innerRadius": 25, "radius": 40 }'>{{ outcalls_yest }}/{{ plan_outcalls }}</span>
+</p5> <br>{{ outcalls_yest }}/{{ plan_outcalls }}</td>
+
+        <td style="width: 155px"> <p1>Звонки за сегодня</p1> <br> <p5 class="data-attributes">
+            <span data-peity='{"innerRadius": 25, "radius": 40 }'>{{ outcalls_today }}/{{ plan_outcalls }}</span>
+        </p5> <br> <span id="outcalls_today">{{ outcalls_today }}</span> /{{ plan_outcalls }}</td>
+    </tr>
+    <tr>
+        <td colspan="2"> <p1> Звонки за месяц</p1> <br>  <p5 class="data-attributes">
+  <span data-peity='{"innerRadius": 25, "radius": 40 }'>{{ calls_month }}/{{ plan_month }}</span>
+        </p5>  <br> <span id="calls_month">{{ calls_month }}</span>/{{ plan_month }}</td>
+
+        <td colspan="2"><p1> Звонки за месяц</p1> <br>  <p5 class="data-attributes">
+  <span data-peity='{"innerRadius": 25, "radius": 40 }'>{{ outcalls_month }}/{{ plan_month_out }}</span>
+        </p5>  <br> <span id="outcalls_month">{{ outcalls_month }}</span>/{{ plan_month_out }}</td>
     </tr>
 </table>
+    <span id="top"></span>
 {% endblock %}
