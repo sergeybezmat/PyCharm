@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request
 from sqlalchemy import create_engine
+from  aiohttp import web
 import datetime
+import json
+
 
 now = datetime.datetime.now()
 dataa = now.strftime("%Y-%m-%d")
@@ -12,12 +15,15 @@ app = Flask(__name__)
 engine = create_engine("postgresql://naucrm:naucrm@172.16.200.199:5432/naumenreportsdb")
 connection1 = engine.connect()
 
+
+
+
 @app.route('/')
 def home():
      return render_template('home.html')
 
 
-@app.route('/index', methods=['GET', 'POST'])
+@app.route('/index')
 def index():
     return render_template('index.html')
 
@@ -44,13 +50,17 @@ def ind():
     plan_month = int(plan_calls)*21
     # топ
     spisok = [(' ', 'Пусто') for i in range(3)]
-    t = connection1.execute("with vspom as (select operatortitle, Sum(Case When direction = 'Inbound' Then 1 Else 0 End) as direction From mv_phone_call where direction = 'Inbound' and creationdate >= '{0}'::date and creationdate <'{0}'::date+1 group by operatortitle) select direction, operatortitle from vspom order by direction desc, operatortitle".format(dataa))
-    for i, v in enumerate(t):
+    top = connection1.execute("with vspom as (select operatortitle, Sum(Case When direction = 'Inbound' Then 1 Else 0 End) as direction From mv_phone_call where direction = 'Inbound' and creationdate >= '{0}'::date and creationdate <'{0}'::date+1 group by operatortitle) select direction, operatortitle from vspom order by direction desc, operatortitle".format(dataa))
+
+    for i, v in enumerate(top):
+      if i<3:
         spisok[i] = v
-        eq=spisok[i][1].split()
-        del eq[-1]
-        eq = eq[1] + ' ' + eq[0]
-        spisok[i] = (spisok[i][0], eq)
+        surname_name = spisok[i][1].split()
+        del surname_name[-1]
+        surname_name = surname_name[1] + ' ' + surname_name[0]
+        spisok[i] = (spisok[i][0], surname_name)
+      else:
+          break
     #исходящие звонки за сегодня
     outcalls_today = connection1.execute("select count(*) from mv_phone_call, mv_employee where operatortitle = title and direction = 'Outbound' and login = '{0}' and mv_phone_call.creationdate >= '{1}'::date and mv_phone_call.creationdate <'{1}'::date+1;".format(login, dataa))
     for i in outcalls_today:
@@ -100,37 +110,49 @@ def calls_yest():
  #исходящие звонки за сегодня
 @app.route('/outcalls_today')
 def outcalls_today():
+    login = request.args.get('login1')
     outcalls_today = connection1.execute("select count(*) from mv_phone_call, mv_employee where operatortitle = title and direction = 'Outbound' and login = '{0}' and mv_phone_call.creationdate >= '{1}'::date and mv_phone_call.creationdate <'{1}'::date+1;".format(login, dataa))
     for i in outcalls_today:
         outcalls_today = i[0]
     return str(outcalls_today)
+
     #Исходящие звонки за вчера
 @app.route('/outcalls_yest')
 def outcalls_yest():
+    login = request.args.get('login1')
     outcalls_yest = connection1.execute("select count(*) from mv_phone_call, mv_employee where operatortitle = title and direction = 'Outbound' and login = '{0}' and mv_phone_call.creationdate >= '{1}'::date and mv_phone_call.creationdate <'{1}'::date+1;".format(login, yesterday))
     for i in outcalls_yest:
         outcalls_yest = i[0]
     return str(outcalls_yest)
+
     #Исходящие звонки за месяц
 @app.route('/outcalls_month')
 def outcalls_month():
+    login = request.args.get('login1')
     outcalls_month = connection1.execute("select count(*) from mv_phone_call, mv_employee where operatortitle = title and direction = 'Outbound' and login = '{0}' and mv_phone_call.creationdate >= '2019-0{1}-01'::date and mv_phone_call.creationdate <'2019-0{1}-30'::date;".format(login, mon))
     for i in outcalls_month:
         outcalls_month = i[0]
     return str(outcalls_month)
 
-
 @app.route('/top')
 def top():
     spisok = [(' ', 'Пусто') for i in range(3)]
-    t = connection1.execute("with vspom as (select operatortitle, Sum(Case When direction = 'Inbound' Then 1 Else 0 End) as direction From mv_phone_call where direction = 'Inbound' and creationdate >= '{0}'::date and creationdate <'{0}'::date+1 group by operatortitle) select direction, operatortitle from vspom order by direction desc, operatortitle".format(dataa))
-    for i, v in enumerate(t):
+    top = connection1.execute("with vspom as (select operatortitle, Sum(Case When direction = 'Inbound' Then 1 Else 0 End) as direction From mv_phone_call where direction = 'Inbound' and creationdate >= '{0}'::date and creationdate <'{0}'::date+1 group by operatortitle) select direction, operatortitle from vspom order by direction desc, operatortitle".format(dataa))
+    for i, v in enumerate(top):
+      if i<3:
         spisok[i] = v
-        eq = spisok[i][1].split()
-        del eq[-1]
-        eq = eq[1] + ' ' + eq[0]
-        spisok[i] = (spisok[i][0], eq)
-    return spisok
+        surname_name = spisok[i][1].split()
+        del surname_name[-1]
+        surname_name = surname_name[1] + ' ' + surname_name[0]
+        spisok[i] = (spisok[i][0], surname_name)
+      else:
+          break
+    top1 = {"name1": spisok[0][1], "calls1": spisok[0][0], "name2": spisok[1][1], "calls2": spisok[1][0], "name3": spisok[2][1], "calls3": spisok[2][0]}
+    top1 = json.dumps(top1, ensure_ascii=False)
+
+    return top1
+
+
 
 
 if __name__ == "__main__":
