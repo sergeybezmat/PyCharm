@@ -1,55 +1,7 @@
  {% extends "base.html" %}
 {% block content %}
-<script>
-$.urlParam = function(name){
-    var results = new RegExp('[/?&]' + name + '=([^&#]*)').exec(window.location.href);
-    if (results==null){
-       return null;
-    }
-    else{
-       return decodeURI(results[1]) || 0;
-    }
-}
-log = decodeURIComponent($.urlParam('login'))
+<script src="static/reload.js"></script>
 
-
-
-function show(url, bl) {
-    $.ajax({
-        url : url,
-        data : { login1: log},
-        cache : false,
-        success: function(html) {
-                    bl.html(html);
-        }
-    });
-  }
-
-setInterval('show(\'/calls_today\', $(\'#calls_today\'))', 60000);
-setInterval('show(\'/calls_month\', $(\'#calls_month\'))', 60000);
-//исходящие
-setInterval('show(\'/outcalls_today\', $(\'#outcalls_today\'))', 60000);
-setInterval('show(\'/outcalls_month\', $(\'#outcalls_month\'))', 60000);
-</script>
-
-<script>
-function show1() {
-    $.ajax({
-        url : '/top',
-        cache : false,
-        success: function(top1) {
-                    var top_user = JSON.parse(top1);
-                    $('#name1').html(top_user.name1);
-                    $('#calls1').html(top_user.calls1);
-                    $('#name2').html(top_user.name2);
-                    $('#calls2').html(top_user.calls2);
-                    $('#name3').html(top_user.name3);
-                    $('#calls3').html(top_user.calls3);
-        }
-    });
-    }
-setInterval('show1()', 60000);
-</script>
 <table>
     <tr>
         <td colspan="4", style="text-align: center"><p style=" padding: 8px;"> Мои показатели</p></td>
@@ -65,73 +17,61 @@ setInterval('show1()', 60000);
         <td colspan="2"><p>Исходящие звонки</p></td>
     </tr>
     <tr>
-        <td><p1> Звонки вчера <br> </p1>  <p5 class="data-attributes">
-  <span data-peity='{"innerRadius": 25, "radius": 40 }'>{{ calls_yest }}/{{ plan_calls }}</span>
-</p5> <br> {{ calls_yest }}/{{ plan_calls }} </td>
-        <td><p1> Звонки сегодня</p1> <br> <p5 class="data-attributes">
-            <span data-peity='{"innerRadius": 25, "radius": 40 }'>{{ calls_today }}/{{ plan_calls }}</span>
-        </p5> <br>  <span id="calls_today" >{{ calls_today }}</span>/{{ plan_calls }}</td>
+        <td><p1> Звонки вчера <br> </p1>
+  <canvas id="outcall_yest" width="110" height="90"></canvas> </td>
 
-        <td><p1>Звонки за вчера</p1> <br> <p5 class="data-attributes">
-  <span data-peity='{"innerRadius": 25, "radius": 40 }'>{{ outcalls_yest }}/{{ plan_outcalls }}</span>
-</p5> <br>{{ outcalls_yest }}/{{ plan_outcalls }}</td>
+        <td><p1> Звонки сегодня</p1> <br>
+            <canvas id="outcall_today" width="110" height="90"></canvas> </td>
 
-        <td style="width: 155px"> <p1>Звонки за сегодня</p1> <br> <p5 class="data-attributes">
-            <span data-peity='{"innerRadius": 25, "radius": 40 }'>{{ outcalls_today }}/{{ plan_outcalls }}</span>
-        </p5> <br> <span id="outcalls_today">{{ outcalls_today }}</span> /{{ plan_outcalls }}</td>
+        <td><p1> Звонки вчера <br> </p1>
+  <canvas id="incall_yest" width="110" height="90"></canvas> </td>
+
+        <td><p1> Звонки сегодня</p1> <br>
+            <canvas id="incall_today" width="110" height="90"></canvas> </td>
     </tr>
     <tr>
-        <td colspan="2"> <p1> Звонки за месяц</p1> <br>  <p5 class="data-attributes">
-  <span data-peity='{"innerRadius": 25, "radius": 40 }'>{{ calls_month }}/{{ plan_month }}</span>
-        </p5>  <br> <span id="calls_month">{{ calls_month }}</span>/{{ plan_month }}</td>
+        <td colspan="2"> <p1> Звонки за месяц</p1> <br>  <canvas id="outcall_month" width="110" height="50"></canvas> </td> </td>
 
-        <td colspan="2"><p1> Звонки за месяц</p1> <br>  <p5 class="data-attributes">
-  <span data-peity='{"innerRadius": 25, "radius": 40 }'>{{ outcalls_month }}/{{ plan_month_out }}</span>
-        </p5>  <br> <span id="outcalls_month">{{ outcalls_month }}</span>/{{ plan_month_out }}</td>
+        <td colspan="2"><p1> Звонки за месяц</p1> <br>  <canvas id="incall_month" width="110" height="50"></canvas> </td> </td>
     </tr>
 </table>
 
-
-
-    <canvas id="myChart" width="400" height="400"></canvas>
 <script>
-var ctx = document.getElementById('myChart').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
+function chart(name, data1, data2) {
+
+    new Chart(document.getElementById(name), {
+        type: 'doughnut',
+        data: {
+
+            datasets: [
+                {
+
+                    backgroundColor: ["#FFB500", "#CED3C8"],
+                    data: [data1, data2-data1]
                 }
-            }]
+            ]
+        },
+        options: {
+            cutoutPercentage: 67,
+
+            elements: {
+                center: {
+                    text: data1 + '/' + data2,
+                    fontStyle: 'Helvetica', //Default Arial
+                    sidePadding: 15, //Default 20 (as a percentage)
+                    maintainAspectRatio: true,
+                    responsive: false
+                }
+            }
         }
-    }
-});
+    });
+}
 </script>
+    <script>chart('incall_yest',{{ outcalls_yest }},{{ plan_outcalls }})
+     chart('incall_today',{{ outcalls_today }},{{ plan_outcalls }})
+    chart('outcall_yest',{{ calls_yest }},{{ plan_calls }})
+    chart('outcall_today',{{ calls_today }},{{ plan_calls }})
+    chart('incall_month',{{ outcalls_month }},{{ plan_month_out }})
+    chart('outcall_month',{{ calls_month }},{{ plan_month }})</script>
 
 {% endblock %}

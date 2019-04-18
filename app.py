@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request
 from sqlalchemy import create_engine
-from  aiohttp import web
 import datetime
 import json
 
