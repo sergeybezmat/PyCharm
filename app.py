@@ -65,7 +65,6 @@ def calls_all():
     calls_yest = connection1.execute("select count(*) from mv_phone_call, mv_employee where operatortitle = title and direction = 'Inbound' and login = '{0}' and mv_phone_call.creationdate >= '{1}'::date and mv_phone_call.creationdate <'{1}'::date+1;".format(login, yesterday))
     for i in calls_yest:
         calls_yest = i[0]
-
  #исходящие звонки за сегодня
     outcalls_today = connection1.execute("select count(*) from mv_phone_call, mv_employee where operatortitle = title and direction = 'Outbound' and login = '{0}' and mv_phone_call.creationdate >= '{1}'::date and mv_phone_call.creationdate <'{1}'::date+1;".format(login, dataa))
     for i in outcalls_today:
@@ -101,9 +100,6 @@ def top():
     top1 = json.dumps(top1, ensure_ascii=False)
 
     return top1
-
-
-
 
 if __name__ == "__main__":
           app.run(treding = True)

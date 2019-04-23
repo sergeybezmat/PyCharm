@@ -1,0 +1,36 @@
+
+        td {
+            width: 150px;
+            text-align: center;
+            vertical-align: center;
+        }
+        p{
+            border-radius: 5px;
+            color:white;
+            background: #FBB508;
+            font-family: Arial;
+            text-align: center;
+            padding-left: 10px;
+            padding-right: 10px;
+            height: 27px;
+            width: 250px;
+            font-size: 20px;
+            vertical-align: text-top;/* Выравнивание по вертикали */
+            margin-left: auto;
+            margin-right: auto;
+
+        }
+        p1{
+            border-radius: 0 10px;
+            color:white;
+            background: #FFB11A;
+            font-family: Arial;
+            text-align: center;
+            padding-left: 10px;
+            padding-right: 10px;
+            height: 3px;
+            width: 125px;
+        }
+        div {
+            display: none;
+        }

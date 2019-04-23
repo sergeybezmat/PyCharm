@@ -2,68 +2,12 @@
 <html lang="en">
 <head>
       <title>GET запросы</title>
-     <!-- <link href='{{ url_for('static', filename='st6.css') }}' rel='stylesheet'> -->
-    <style>
-
-
-        td {
-            width: 150px;
-            text-align: center;
-            vertical-align: center;
-        }
-        p{
-            border-radius: 5px;
-            color:white;
-            background: #FBB508;
-            font-family: Arial;
-            text-align: center;
-            padding-left: 10px;
-            padding-right: 10px;
-            height: 27px;
-            width: 250px;
-            font-size: 20px;
-            vertical-align: text-top;/* Выравнивание по вертикали */
-            margin-left: auto;
-            margin-right: auto;
-
-        }
-        p1{
-            border-radius: 0 10px;
-            color:white;
-            background: #FFB11A;
-            font-family: Arial;
-            text-align: center;
-            padding-left: 10px;
-            padding-right: 10px;
-            height: 3px;
-            width: 125px;
-        }
-
-
-    </style>
-
-
-
+      <link href='{{ url_for('static', filename='style1.css') }}' rel='stylesheet'>
     <script src="static/jquery-3.3.1.min.js"></script>
     <script src="static/chart.js"></script>
     <script src="static/textdonut.js"></script>
-
-
-
-
-
-
-
 </head>
-
-
-
     <body>
-
-
-
-
-      <!--  <meta http-equiv="Refresh" content="5" /> -->
         {% block content %}{% endblock %}
         <br>
         <br>
