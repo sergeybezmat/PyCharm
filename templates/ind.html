@@ -55,7 +55,7 @@ $.urlParam = function(name){
         return decodeURI(results[1]) || 0;
     }
 }
-log = decodeURIComponent($.urlParam('login'))
+log = decodeURIComponent($.urlParam('uuid'))
 
 function chart(name, data1, data2) {
 
@@ -123,14 +123,20 @@ function top3() {
                     $('#calls2').html(top_user.calls2);
                     $('#name3').html(top_user.name3);
                     $('#calls3').html(top_user.calls3);
+         },
+        error: function(da) {
+                         alert("Error!!!!!!");
         }
     });
     }
+
 top3();
 setInterval('top3()', 60000);
 
 calls_all();
 setInterval('calls_all()', 60000);
+
+
 
 </script>
 </body>

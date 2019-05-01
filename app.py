@@ -18,12 +18,10 @@ connection1 = engine.connect()
 #@app.route('/')
 @app.route('/ind')
 def ind():
-   # uuid = request.args.get('login1')
-    #login = connection1.execute("select login from mv_employee where uuid = '{0}'".format(uuid))
-    #for i in login:
-       # login = i[0]
-    login = request.args.get('login')
-
+    uuid = request.args.get('uuid')
+    login = connection1.execute("select login from mv_employee where uuid = '{0}'".format(uuid))
+    for i in login:
+        login = i[0]
     #print(uuid, login, '1')
     # план звонков за день
     plan_calls = connection1.execute("select distinct stringcontent from mv_phone_call, mv_flex_attribute, mv_employee where mv_flex_attribute.identifier = 'plan_calls' and mv_phone_call.operatoruuid=mv_flex_attribute.objuuid and mv_phone_call.operatoruuid=mv_employee.uuid and login = '{0}'".format(login))
@@ -59,10 +57,10 @@ def ind():
 
 @app.route('/calls_all')
 def calls_all():
-    login = request.args.get('login')
-    #login = connection1.execute("select login from mv_employee where uuid = '{0}'".format(uuid))
-    #for i in login:
-     #   login = i[0]
+    uuid = request.args.get('login1')
+    login = connection1.execute("select login from mv_employee where uuid = '{0}'".format(uuid))
+    for i in login:
+        login = i[0]
     # звонки за сегодня
     calls_today = connection1.execute("select count(*) from mv_phone_call, mv_employee where operatortitle = title and direction = 'Inbound' and login = '{0}' and mv_phone_call.creationdate >= '{1}'::date and mv_phone_call.creationdate <'{1}'::date+1;".format(login, dataa))
     for i in calls_today:
@@ -89,6 +87,7 @@ def calls_all():
         outcalls_month = i[0]
     calls_all = {"calls_month": calls_month, "calls_today": calls_today, "calls_yest": calls_yest, "outcalls_today": outcalls_today, "outcalls_yest": outcalls_yest, "outcalls_month": outcalls_month}
     calls_all = json.dumps(calls_all, ensure_ascii=False)
+    print(calls_all)
     return calls_all
 
 @app.route('/top')
@@ -108,13 +107,7 @@ def top():
     top1 = json.dumps(top1, ensure_ascii=False)
     return top1
 
-@app.route('/uuidinlogin')
-def uuid():
-    uuid = request.args.get('login2')
-    login = connection1.execute("select login from mv_employee where uuid = '{0}'".format(uuid))
-    for i in login:
-        login = i[0]
-    return login
+
 
 if __name__ == "__main__":
     app.run(treding = True)
