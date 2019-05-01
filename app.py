@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from sqlalchemy import create_engine
 import datetime
 import json
+import sqlalchemy
 
 now = datetime.datetime.now()
 dataa = now.strftime("%Y-%m-%d")
@@ -10,24 +11,30 @@ yesterday = data_yesterday.strftime("%Y-%m-%d")
 mon = now.month
 
 app = Flask(__name__)
-engine = create_engine("postgresql://naucrm:naucrm@172.16.201.15:5432/naumenreportsdb")
+engine = create_engine("postgresql://naucrm:naucrm@192.168.1.178:5432/naumenreportsdb")
 connection1 = engine.connect()
 
-@app.route('/')
-def home():
-     return render_template('home.html')
-
-@app.route('/index')
-def index():
-    return render_template('index.html')
-
+#@app.route('/published')
+#@app.route('/')
 @app.route('/ind')
 def ind():
+   # uuid = request.args.get('login1')
+    #login = connection1.execute("select login from mv_employee where uuid = '{0}'".format(uuid))
+    #for i in login:
+       # login = i[0]
     login = request.args.get('login')
+
+    #print(uuid, login, '1')
     # план звонков за день
     plan_calls = connection1.execute("select distinct stringcontent from mv_phone_call, mv_flex_attribute, mv_employee where mv_flex_attribute.identifier = 'plan_calls' and mv_phone_call.operatoruuid=mv_flex_attribute.objuuid and mv_phone_call.operatoruuid=mv_employee.uuid and login = '{0}'".format(login))
     for i in plan_calls:
-        plan_calls = i[0]
+       plan_calls = i[0]
+    if isinstance(plan_calls, sqlalchemy.engine.result.ResultProxy):
+        print('Ошибка запроса из бд')
+        return render_template('ind.html', title='Ошибка при запросе данных по указанному логину', plan_outcalls=0,
+         plan_month_out=0, plan_calls=0, plan_month=0,
+         name1=' ', calls1=' ', name2=' ', calls2=' ',
+         name3=' ', calls3=' ')
     plan_month = int(plan_calls)*21
     # топ
     spisok = [(' ', 'Пусто') for i in range(3)]
@@ -48,12 +55,14 @@ def ind():
     for i in plan_outcalls:
         plan_outcalls = i[0]
     plan_month_out = int(plan_outcalls) * 21
-
     return render_template('ind.html', title='Статистика', plan_outcalls=plan_outcalls, plan_month_out=plan_month_out, plan_calls=plan_calls, plan_month=plan_month, name1=spisok[0][1], calls1=spisok[0][0], name2=spisok[1][1], calls2=spisok[1][0], name3=spisok[2][1], calls3=spisok[2][0])
 
 @app.route('/calls_all')
 def calls_all():
-    login = request.args.get('login1')
+    login = request.args.get('login')
+    #login = connection1.execute("select login from mv_employee where uuid = '{0}'".format(uuid))
+    #for i in login:
+     #   login = i[0]
     # звонки за сегодня
     calls_today = connection1.execute("select count(*) from mv_phone_call, mv_employee where operatortitle = title and direction = 'Inbound' and login = '{0}' and mv_phone_call.creationdate >= '{1}'::date and mv_phone_call.creationdate <'{1}'::date+1;".format(login, dataa))
     for i in calls_today:
@@ -80,7 +89,6 @@ def calls_all():
         outcalls_month = i[0]
     calls_all = {"calls_month": calls_month, "calls_today": calls_today, "calls_yest": calls_yest, "outcalls_today": outcalls_today, "outcalls_yest": outcalls_yest, "outcalls_month": outcalls_month}
     calls_all = json.dumps(calls_all, ensure_ascii=False)
-    print(calls_all)
     return calls_all
 
 @app.route('/top')
@@ -98,8 +106,15 @@ def top():
           break
     top1 = {"name1": spisok[0][1], "calls1": spisok[0][0], "name2": spisok[1][1], "calls2": spisok[1][0], "name3": spisok[2][1], "calls3": spisok[2][0]}
     top1 = json.dumps(top1, ensure_ascii=False)
-
     return top1
 
+@app.route('/uuidinlogin')
+def uuid():
+    uuid = request.args.get('login2')
+    login = connection1.execute("select login from mv_employee where uuid = '{0}'".format(uuid))
+    for i in login:
+        login = i[0]
+    return login
+
 if __name__ == "__main__":
-          app.run(treding = True)
+    app.run(treding = True)

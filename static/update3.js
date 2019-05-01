@@ -4,7 +4,7 @@ $.urlParam = function(name){
        return null;
     }
     else{
-       return decodeURI(results[1]) || 0;
+        return decodeURI(results[1]) || 0;
     }
 }
 log = decodeURIComponent($.urlParam('login'))
@@ -78,7 +78,7 @@ function top3() {
         }
     });
     }
-top3()
+top3();
 setInterval('top3()', 60000);
 
 calls_all();

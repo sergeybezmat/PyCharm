@@ -1,51 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-      <title>GET запросы</title>
-      <link href='{{ url_for('static', filename='style1.css') }}' rel='stylesheet'>
-    <script src="static/jquery-3.3.1.min.js"></script>
-    <script src="static/chart.js"></script>
-    <script src="static/textdonut.js"></script>
-</head>
-    <body>
-
-
-<table>
-    <tr>
-        <td colspan="4", style="text-align: center"><p style=" padding: 8px;"> Мои показатели</p></td>
-        <td rowspan="4", style="vertical-align: text-top"><p style=" padding: 8px;"> Лидеры дня по звонкам  <br>
-            <p style="background: #FCB408"> <span id="name1"> {{ name1 }} </span>  <span id="calls1"> {{ calls1 }}</span>  </p>
-            <p style="background: #DDAB40;"> <span id="name2"> {{ name2 }} </span>  <span id="calls2"> {{ calls2 }}</span> </p>
-            <p style="background: #E6D6B2"> <span id="name3"> {{ name3 }} </span>  <span id="calls3"> {{ calls3 }}</span> </p>
-
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2"><p>Входящие звонки</p></td>
-        <td colspan="2"><p>Исходящие звонки</p></td>
-    </tr>
-    <tr>
-        <td><p1> Звонки вчера <br> </p1>
-  <canvas id="outcall_yest" width="110" height="90"></canvas> </td>
-
-        <td><p1> Звонки сегодня</p1> <br>
-            <canvas id="outcall_today" width="110" height="90"></canvas> </td>
-
-        <td><p1> Звонки вчера <br> </p1>
-  <canvas id="incall_yest" width="110" height="90"></canvas> </td>
-
-        <td><p1> Звонки сегодня</p1> <br>
-            <canvas id="incall_today" width="110" height="90"></canvas> </td>
-    </tr>
-    <tr>
-        <td colspan="2"> <p1> Звонки за месяц</p1> <br>  <canvas id="outcall_month" width="110" height="50"></canvas> </td> </td>
-
-        <td colspan="2"><p1> Звонки за месяц</p1> <br>  <canvas id="incall_month" width="110" height="50"></canvas> </td> </td>
-    </tr>
-</table>
-    <div id="plan_outcalls">{{plan_outcalls}}</div>
-    <div id="plan_calls">{{plan_calls}}</div>
-<script>
 $.urlParam = function(name){
     var results = new RegExp('[/?&]' + name + '=([^&#]*)').exec(window.location.href);
     if (results==null){
@@ -55,7 +7,8 @@ $.urlParam = function(name){
         return decodeURI(results[1]) || 0;
     }
 }
-log = decodeURIComponent($.urlParam('login'))
+log = decodeURIComponent($.urlParam('login'));
+alert(log);
 
 function chart(name, data1, data2) {
 
@@ -96,7 +49,7 @@ var plan_month = plan_calls1 * 21,
 
 function calls_all() {
     $.ajax({
-        url : '/calls_all',
+        url : 'http://192.168.1.192:5000/calls_all',
         data : { login1: log},
         cache : false,
         success: function(calls_all) {
@@ -113,7 +66,7 @@ function calls_all() {
 
 function top3() {
     $.ajax({
-        url : '/top',
+        url : 'http://192.168.1.192:5000/top',
         cache : false,
         success: function(top1) {
                     var top_user = JSON.parse(top1);
@@ -132,6 +85,3 @@ setInterval('top3()', 60000);
 calls_all();
 setInterval('calls_all()', 60000);
 
-</script>
-</body>
-</html>
