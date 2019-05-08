@@ -1,20 +1,29 @@
+ table {
+            border-collapse: collapse;
+            border-spacing: 1px 1px;
+            margin: auto;
+        }
 
         td {
-            width: 150px;
+
+            width: 110px;
             text-align: center;
             vertical-align: center;
+            padding: 1px;
+            text-align: center;
+
         }
         p{
-            border-radius: 5px;
+            border-radius: 3px;
             color:white;
             background: #FBB508;
-            font-family: Arial;
+            font-family: 'Open Sans', sans-serif;
             text-align: center;
             padding-left: 10px;
             padding-right: 10px;
-            height: 27px;
-            width: 250px;
-            font-size: 20px;
+            height: 15px;
+            width: 180px;
+            font-size: 14px;
             vertical-align: text-top;/* Выравнивание по вертикали */
             margin-left: auto;
             margin-right: auto;
@@ -24,12 +33,13 @@
             border-radius: 0 10px;
             color:white;
             background: #FFB11A;
-            font-family: Arial;
+            font-size: 11px;
+            font-family: 'Open Sans', sans-serif;
             text-align: center;
             padding-left: 10px;
             padding-right: 10px;
-            height: 3px;
-            width: 125px;
+            height: 1px;
+            width: 100px;
         }
         div {
             display: none;

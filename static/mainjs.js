@@ -7,7 +7,7 @@ $.urlParam = function(name){
         return decodeURI(results[1]) || 0;
     }
 }
-log = decodeURIComponent($.urlParam('login'))
+log = decodeURIComponent($.urlParam('uuid'))
 
 function chart(name, data1, data2) {
 
@@ -43,8 +43,9 @@ function chart(name, data1, data2) {
 }
 var plan_calls1 = $('#plan_calls').html();
 var plan_outcalls1 = $('#plan_outcalls').html();
-var plan_month = plan_calls1 * 21,
-    plan_month_out = plan_outcalls1 * 21;
+var working_day = $('#working_day').html();
+var plan_month = plan_calls1 * working_day,
+    plan_month_out = plan_outcalls1 * working_day;
 
 function calls_all() {
     $.ajax({
@@ -75,11 +76,20 @@ function top3() {
                     $('#calls2').html(top_user.calls2);
                     $('#name3').html(top_user.name3);
                     $('#calls3').html(top_user.calls3);
-        }
+                    $('#out_name1').html(top_user.out_name1);
+                    $('#out_calls1').html(top_user.out_calls1);
+                    $('#out_name2').html(top_user.out_name2);
+                    $('#out_calls2').html(top_user.out_calls2);
+                    $('#out_name3').html(top_user.out_name3);
+                    $('#out_calls3').html(top_user.out_calls3);
+         }
     });
     }
+
 top3();
 setInterval('top3()', 60000);
 
 calls_all();
 setInterval('calls_all()', 60000);
+
+
