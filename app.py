@@ -11,7 +11,7 @@ yesterday = data_yesterday.strftime("%Y-%m-%d")
 mon = now.month
 
 app = Flask(__name__)
-engine = create_engine("postgresql://naucrm:naucrm@192.168.43.190:5432/naumenreportsdb") # Отчетная БД
+engine = create_engine("postgresql://naucrm:naucrm@192.168.226.136:5432/naumenreportsdb") # Отчетная БД
 connection1 = engine.connect()
 
 corebo = 'corebo'
@@ -105,10 +105,13 @@ def calls_all():
     for i in outcalls_yest:
         outcalls_yest = i[0]
     #Исходящие звонки за месяц
-    outcalls_month = connection1.execute("select count(*) from mv_phone_call, mv_employee where operatortitle = title and direction = 'Outbound' and login = '{0}' and mv_phone_call.creationdate >= '2019-0{1}-01'::date and mv_phone_call.creationdate <'2019-0{1}-30'::date;".format(login, mon))
+    outcalls_month = connection1.execute("select count(*) from mv_phone_call, mv_employee where operatortitle = title and direction"
+                                         " = 'Outbound' and login = '{0}' and mv_phone_call.creationdate >= '2019-0{1}-01'::date and"
+                                         " mv_phone_call.creationdate <'2019-0{1}-30'::date;".format(login, mon))
     for i in outcalls_month:
         outcalls_month = i[0]
-    calls_all = {"calls_month": calls_month, "calls_today": calls_today, "calls_yest": calls_yest, "outcalls_today": outcalls_today, "outcalls_yest": outcalls_yest, "outcalls_month": outcalls_month}
+    calls_all = {"calls_month": calls_month, "calls_today": calls_today, "calls_yest": calls_yest,
+                 "outcalls_today": outcalls_today, "outcalls_yest": outcalls_yest, "outcalls_month": outcalls_month}
     calls_all = json.dumps(calls_all, ensure_ascii=False)
 
     return calls_all
