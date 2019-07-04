@@ -130,10 +130,13 @@ def top():
       else:
           break
 
-      out_spisok = [(' ', 'Пусто') for i in range(3)]
-      out_top = connection1.execute("with vspom as (select operatortitle, Sum(Case When direction = 'Outbound' Then 1 Else 0 End) as direction From mv_phone_call where dstphonenumber != '1234' and direction = 'Outbound' and creationdate >= '{0}'::date and creationdate <'{0}'::date+1 group by operatortitle) select direction, operatortitle from vspom order by direction desc, operatortitle".format(dataa))
+    out_spisok = [(' ', 'Пусто') for i in range(3)]
+    out_top = connection1.execute("with vspom as (select operatortitle, Sum(Case When direction = 'Outbound' Then 1 Else 0 End) as direction From mv_phone_call where dstphonenumber != '1234' and direction = 'Outbound' and creationdate >= '{0}'::date and creationdate <'{0}'::date+1 group by operatortitle) select direction, operatortitle from vspom order by direction desc, operatortitle".format(dataa))
 
-      for i, v in enumerate(out_top):
+    if isinstance(out_top, sqlalchemy.engine.result.ResultProxy): #new
+         print("пустой список лидеров")
+    else:  #end new
+       for i, v in enumerate(out_top):
           if i < 3:
               out_spisok[i] = v
               surname_name = out_spisok[i][1].split()
